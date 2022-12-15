@@ -21,10 +21,10 @@ model = dict(
 
 # dataset 16 x 256
 # NUS dataset settings
-dataset_type = 'mmcls.ImageNet'
-data_root = '/data/common/ImageNet/'
-file_client_args = dict(backend='disk')
-ann_file = '/home/nus-zwb/research/data/imagenet/meta/train.txt'
+# dataset_type = 'mmcls.ImageNet'
+# data_root = '/data/common/ImageNet/'
+# file_client_args = dict(backend='disk')
+# ann_file = '/home/nus-zwb/research/data/imagenet/meta/train.txt'
 
 # 集群 dataset settings
 dataset_type = 'mmcls.ImageNet'
