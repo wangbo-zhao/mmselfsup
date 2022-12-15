@@ -26,6 +26,19 @@ data_root = '/data/common/ImageNet/'
 file_client_args = dict(backend='disk')
 ann_file = '/home/nus-zwb/research/data/imagenet/meta/train.txt'
 
+# 集群 dataset settings
+dataset_type = 'mmcls.ImageNet'
+data_root = 'data/imagenet/'
+file_client_args = dict(
+    backend='petrel',
+    path_mapping=dict({
+        '.data/imagenet/':
+        'openmmlab:s3://openmmlab/datasets/classification/imagenet/',
+        'data/imagenet/':
+        'openmmlab:s3://openmmlab/datasets/classification/imagenet/'
+    }))
+ann_file = '"/mnt/petrelfs/zhaowangbo/research/2022ICLR/data/imagenet/meta/train.txt"'
+
 train_pipeline = [
     dict(type='LoadImageFromFile', file_client_args=file_client_args),
     dict(
