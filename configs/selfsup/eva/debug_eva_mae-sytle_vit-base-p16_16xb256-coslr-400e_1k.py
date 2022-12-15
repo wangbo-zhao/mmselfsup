@@ -37,7 +37,7 @@ file_client_args = dict(
         'data/imagenet/':
         'openmmlab:s3://openmmlab/datasets/classification/imagenet/'
     }))
-ann_file = '"/mnt/petrelfs/zhaowangbo/research/2022ICLR/data/imagenet/meta/train.txt"'
+ann_file = "/mnt/petrelfs/zhaowangbo/research/2022ICLR/data/imagenet/meta/train.txt"
 
 train_pipeline = [
     dict(type='LoadImageFromFile', file_client_args=file_client_args),
