@@ -21,7 +21,6 @@ train_ann_file = "/mnt/petrelfs/zhaowangbo/research/2022ICLR/data/imagenet/meta/
 test_ann_file = "/mnt/petrelfs/zhaowangbo/research/2022ICLR/data/imagenet/meta/val.txt"
 
 
-file_client_args = dict(backend='disk')
 train_pipeline = [
     dict(type='LoadImageFromFile', file_client_args=file_client_args),
     dict(type='RandomResizedCrop', scale=224, backend='pillow'),
