@@ -3,13 +3,27 @@ _base_ = '../mae/mae_vit-base-p16_8xb512-amp-coslr-400e_in1k.py'
 # model settings
 model = dict(
     type='EVA',
-    backbone=dict(type='MAEViT', arch='b', patch_size=16, mask_ratio=0.75),
-    neck=dict(type='MAEPretrainDecoder', predict_feature_dim=512),
+    backbone=dict(
+        type='MAEViT', 
+        arch='b', 
+        patch_size=16, 
+        mask_ratio=0.75,
+        init_cfg=[
+            dict(type='Xavier', distribution='uniform', layer='Linear'),
+            dict(type='Constant', layer='LayerNorm', val=1.0, bias=0.0)
+        ]),
+    neck=dict(
+        type='MAEPretrainDecoder', 
+        predict_feature_dim=512,
+        init_cfg=[
+            dict(type='Xavier', distribution='uniform', layer='Linear'),
+            dict(type='Constant', layer='LayerNorm', val=1.0, bias=0.0)
+        ]),
     head=dict(
         _delete_=True,
         type='EVAPretrainHead',
         loss=dict(
-            type='CosineSimilarityLoss', shift_factor=1.0, scale_factor=1.0
+            type='CosineSimilarityLoss', shift_factor=2.0, scale_factor=2.0
         ),  # to keep the same with the official implement of EVA
     ),
     target_generator=dict(
@@ -21,23 +35,23 @@ model = dict(
 
 # dataset 16 x 256
 # NUS dataset settings
-# dataset_type = 'mmcls.ImageNet'
-# data_root = '/data/common/ImageNet/'
-# file_client_args = dict(backend='disk')
-# ann_file = '/home/nus-zwb/research/data/imagenet/meta/train.txt'
+dataset_type = 'mmcls.ImageNet'
+data_root = '/data/common/ImageNet/'
+file_client_args = dict(backend='disk')
+ann_file = '/home/nus-zwb/research/data/imagenet/meta/train.txt'
 
 # 集群 dataset settings
-dataset_type = 'mmcls.ImageNet'
-data_root = 'data/imagenet/'
-file_client_args = dict(
-    backend='petrel',
-    path_mapping=dict({
-        '.data/imagenet/':
-        'openmmlab:s3://openmmlab/datasets/classification/imagenet/',
-        'data/imagenet/':
-        'openmmlab:s3://openmmlab/datasets/classification/imagenet/'
-    }))
-ann_file = "/mnt/petrelfs/zhaowangbo/research/2022ICLR/data/imagenet/meta/train.txt"
+# dataset_type = 'mmcls.ImageNet'
+# data_root = 'data/imagenet/'
+# file_client_args = dict(
+#     backend='petrel',
+#     path_mapping=dict({
+#         '.data/imagenet/':
+#         'openmmlab:s3://openmmlab/datasets/classification/imagenet/',
+#         'data/imagenet/':
+#         'openmmlab:s3://openmmlab/datasets/classification/imagenet/'
+#     }))
+# ann_file = "/mnt/petrelfs/zhaowangbo/research/2022ICLR/data/imagenet/meta/train.txt"
 
 train_pipeline = [
     dict(type='LoadImageFromFile', file_client_args=file_client_args),
